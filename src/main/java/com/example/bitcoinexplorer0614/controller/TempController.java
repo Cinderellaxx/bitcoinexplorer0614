@@ -78,4 +78,16 @@ public class TempController {
         return null;
 
     }
+    @GetMapping("/test9")
+    public String test9() throws Throwable {
+        JSONObject blockByHash = bitcoinJsonRpcApi.getBlockByHash("00000000c937983704a73af28acdec37b049d214adbda81d7e2a3dd146f6ed09");
+        return null;
+
+    }
+    @GetMapping("/test10")
+    public String test10() throws Throwable {
+        JSONObject txByHash = bitcoinJsonRpcApi.getTxByHash("500f82b327426b9559bbc2054067025ba482afea8cc69b21799db36b77b52745");
+        return null;
+
+    }
 }
