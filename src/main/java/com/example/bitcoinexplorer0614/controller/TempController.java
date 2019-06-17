@@ -2,12 +2,19 @@ package com.example.bitcoinexplorer0614.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.bitcoinexplorer0614.api.BitcoinJsonRpcApi;
 import com.example.bitcoinexplorer0614.api.BitcoinRestApi;
+import com.googlecode.jsonrpc4j.JsonRpcHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Base64;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/temp")
@@ -15,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class TempController {
     @Autowired
     private BitcoinRestApi bitcoinRestApi;
+    @Autowired
+    private BitcoinJsonRpcApi bitcoinJsonRpcApi;
     @GetMapping("/test")
     public String test(){
         JSONObject blockChainInfo = bitcoinRestApi.getChainInfo();
@@ -61,4 +70,12 @@ public class TempController {
        return memoryPoolContents.toJSONString();
 
    }
+
+    @GetMapping("/test8")
+    public String test8() throws Throwable {
+
+        JSONObject getblockchaininfo = bitcoinJsonRpcApi.getblockchaininfo();
+        return null;
+
+    }
 }
