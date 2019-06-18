@@ -90,4 +90,17 @@ public class TempController {
         return null;
 
     }
+
+    @GetMapping("/test11")
+    public String test11(){
+        JSONObject utxo = bitcoinRestApi.getUTXO("4ab6da982a4f4dc501114492dec7fd96e87094ae37328a77c607caec875eb67d", 0);
+        return utxo.toJSONString();
+
+    }
+
+    @GetMapping("/test12")
+    public String test12(){
+        JSONObject utxoCheckmempool = bitcoinRestApi.getUTXOCheckmempool("4ab6da982a4f4dc501114492dec7fd96e87094ae37328a77c607caec875eb67d", 0);
+        return utxoCheckmempool.toJSONString();
+    }
 }
