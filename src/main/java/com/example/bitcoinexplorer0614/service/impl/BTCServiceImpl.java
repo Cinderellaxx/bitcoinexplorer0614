@@ -78,5 +78,20 @@ public class BTCServiceImpl implements BTCService {
         tx.setWeight(txJson.getFloat("weight"));
         tx.setConfirmations(confirmations);
         transactionMapper.insert(tx);
+
+        txDetail(txJson);
+    }
+
+    @Override
+    public void txDetail(JSONObject txJson) {
+        JSONArray vout = txJson.getJSONArray("vout");
+        txDetailVout(vout);
+    }
+
+    @Override
+    public void txDetailVout(JSONArray vout) {
+        for (Object o : vout) {
+            JSONObject jsonObject = new JSONObject((LinkedHashMap)o);
+        }
     }
 }
