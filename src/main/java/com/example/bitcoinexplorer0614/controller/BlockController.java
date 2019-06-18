@@ -2,6 +2,8 @@ package com.example.bitcoinexplorer0614.controller;
 
 import com.example.bitcoinexplorer0614.dto.BlockGetDto;
 import com.example.bitcoinexplorer0614.dto.BlockListDto;
+import com.example.bitcoinexplorer0614.service.BlockService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,10 +16,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/block")
 public class BlockController {
-    @GetMapping("/getRecentBlocks")
-    public List<BlockListDto> getRecentBlocks(){
+    @Autowired
+    private BlockService blockService;
+    @GetMapping("/getNewBlock")
+    public List<BlockListDto> getNewBlock(){
 
-        ArrayList<BlockListDto> blockListDTOS = new ArrayList<>();
+        /*ArrayList<BlockListDto> blockListDTOS = new ArrayList<>();
 
         BlockListDto blockListDTO = new BlockListDto();
         blockListDTO.setBlockhash("00000000000000000024b3d4793dcbba032d3fc28a0d77a37d466b956fb68aa5");
@@ -34,8 +38,9 @@ public class BlockController {
         blockListDTO2.setTxsize((short) 2702);
         blockListDTO2.setSize(1322496);
         blockListDTOS.add(blockListDTO2);
-
-        return blockListDTOS;
+*/
+        List<BlockListDto> newBlock = blockService.getNewBlock();
+        return newBlock;
     }
 
     @GetMapping("/getByBlockhash")

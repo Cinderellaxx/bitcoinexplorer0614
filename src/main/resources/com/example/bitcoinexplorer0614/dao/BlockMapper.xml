@@ -138,4 +138,12 @@
       prev_block = #{prevBlock,jdbcType=CHAR}
     where blockhash = #{blockhash,jdbcType=CHAR}
   </update>
+
+  <!--add select-->
+  <select id="selectNewBlock" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from block
+    ORDER BY height desc limit 5
+  </select>
 </mapper>
