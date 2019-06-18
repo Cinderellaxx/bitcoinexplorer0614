@@ -4,6 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.bitcoinexplorer0614.api.BitcoinJsonRpcApi;
 import com.example.bitcoinexplorer0614.api.BitcoinRestApi;
+import com.example.bitcoinexplorer0614.dao.BlockMapper;
+import com.example.bitcoinexplorer0614.po.Block;
+import com.example.bitcoinexplorer0614.service.BTCService;
 import com.googlecode.jsonrpc4j.JsonRpcHttpClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Base64;
+import java.util.Date;
 import java.util.HashMap;
 
 @RestController
@@ -24,6 +28,10 @@ public class TempController {
     private BitcoinRestApi bitcoinRestApi;
     @Autowired
     private BitcoinJsonRpcApi bitcoinJsonRpcApi;
+    @Autowired
+    private BlockMapper blockMapper;
+    @Autowired
+    private BTCService btcService;
     @GetMapping("/test")
     public String test(){
         JSONObject blockChainInfo = bitcoinRestApi.getChainInfo();
@@ -31,8 +39,11 @@ public class TempController {
     }
     @GetMapping("/test1")
     public String test1(){
-        JSONObject blockByHashJson = bitcoinRestApi.getBlockByHashJson("000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943");
-        return blockByHashJson.toJSONString();
+       /* JSONObject blockByHashJson = bitcoinRestApi.getBlockByHashJson("000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943");
+        return blockByHashJson.toJSONString();*/
+       String temp="00000000000001acd9a02c622e2ac770b29550414ac1453dea01fd01d79433ce";
+        btcService.sysnBlock(temp);
+       return null;
     }
     @GetMapping("/test2")
     public String test2(){
