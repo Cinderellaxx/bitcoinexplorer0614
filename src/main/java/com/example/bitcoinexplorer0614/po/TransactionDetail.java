@@ -1,6 +1,6 @@
 package com.example.bitcoinexplorer0614.po;
 
-public class TransactionDetail {
+public class TransactionDetail{
     private Long txDetailId;
 
     private String address;

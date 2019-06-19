@@ -4,9 +4,12 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.bitcoinexplorer0614.api.BitcoinRestApi;
 import com.example.bitcoinexplorer0614.dao.BlockMapper;
+import com.example.bitcoinexplorer0614.dao.TransactionDetailMapper;
 import com.example.bitcoinexplorer0614.dao.TransactionMapper;
+import com.example.bitcoinexplorer0614.enumration.TxDType;
 import com.example.bitcoinexplorer0614.po.Block;
 import com.example.bitcoinexplorer0614.po.Transaction;
+import com.example.bitcoinexplorer0614.po.TransactionDetail;
 import com.example.bitcoinexplorer0614.service.BTCService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +32,8 @@ public class BTCServiceImpl implements BTCService {
     private TransactionMapper transactionMapper;
     @Autowired
     private BlockMapper blockMapper;
+    @Autowired
+    private TransactionDetailMapper transactionDetailMapper;
     @Override
     @Async
     @Transactional
@@ -70,7 +75,8 @@ public class BTCServiceImpl implements BTCService {
     @Override
     public void syncTx(JSONObject txJson, String blockHash, Date time, Integer confirmations) {
         Transaction tx = new Transaction();
-        tx.setTxhash(txJson.getString("txid"));
+        String txid = txJson.getString("txid");
+        tx.setTxhash(txid);
         tx.setBlockhash(blockHash);
         //todo set amount
         tx.setTime(time);
@@ -79,19 +85,39 @@ public class BTCServiceImpl implements BTCService {
         tx.setConfirmations(confirmations);
         transactionMapper.insert(tx);
 
-        txDetail(txJson);
+        txDetail(txJson,txid);
     }
 
     @Override
-    public void txDetail(JSONObject txJson) {
-        JSONArray vout = txJson.getJSONArray("vout");
-        txDetailVout(vout);
+    public void txDetail(JSONObject txJson,String txid) {
+        JSONArray vouts = txJson.getJSONArray("vout");
+        txDetailVout(vouts,txid);
+        JSONArray vins = txJson.getJSONArray("vin");
+        txDetailVin(vins,txid);
     }
 
     @Override
-    public void txDetailVout(JSONArray vout) {
-        for (Object o : vout) {
-            JSONObject jsonObject = new JSONObject((LinkedHashMap)o);
+    @Transactional
+    public void txDetailVout(JSONArray vouts,String txid) {
+        for (Object voutObject : vouts) {
+            JSONObject jsonObject = new JSONObject((LinkedHashMap)voutObject);
+            TransactionDetail transactionDetail = new TransactionDetail();
+            transactionDetail.setAmount(jsonObject.getDouble("value"));
+            transactionDetail.setTxhash(txid);
+            transactionDetail.setType((byte)TxDType.Receive.ordinal());
+            JSONObject scriptPubKey = jsonObject.getJSONObject("scriptPubKey");
+            JSONArray addresses = scriptPubKey.getJSONArray("address");
+            if(addresses!=null){
+                String address = addresses.getString(0);
+                transactionDetail.setAddress(address);
+            }
+            transactionDetailMapper.insert(transactionDetail);
+
         }
+    }
+
+    @Override
+    public void txDetailVin(JSONArray vin, String txid) {
+
     }
 }

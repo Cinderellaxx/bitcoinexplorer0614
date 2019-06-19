@@ -10,7 +10,9 @@ public interface BTCService {
 
     void syncTx(JSONObject txJson, String blockHash, Date time, Integer confirmations);
 
-    void txDetail(JSONObject txJson);
+    void txDetail(JSONObject txJson,String txid);
 
-    void txDetailVout(JSONArray vout);
+    void txDetailVout(JSONArray vout,String txid);
+
+    void txDetailVin(JSONArray vin,String txid);
 }
