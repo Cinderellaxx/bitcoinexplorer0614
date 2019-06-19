@@ -2,6 +2,7 @@ package com.example.bitcoinexplorer0614.service.impl;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.example.bitcoinexplorer0614.api.BitcoinJsonRpcApi;
 import com.example.bitcoinexplorer0614.api.BitcoinRestApi;
 import com.example.bitcoinexplorer0614.dao.BlockMapper;
 import com.example.bitcoinexplorer0614.dao.TransactionDetailMapper;
@@ -27,6 +28,8 @@ public class BTCServiceImpl implements BTCService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
+    private BitcoinJsonRpcApi bitcoinJsonRpcApi;
+    @Autowired
     private BitcoinRestApi bitcoinRestApi;
     @Autowired
     private TransactionMapper transactionMapper;
@@ -37,7 +40,7 @@ public class BTCServiceImpl implements BTCService {
     @Override
     @Async
     @Transactional
-    public void sysnBlock(String blockHash) {
+    public void sysnBlock(String blockHash) throws Throwable {
         logger.info("sync bitcoin begin to {}",blockHash);
         String temp=blockHash;
         while(temp!=null && !temp.isEmpty()){
@@ -73,7 +76,8 @@ public class BTCServiceImpl implements BTCService {
     }
 
     @Override
-    public void syncTx(JSONObject txJson, String blockHash, Date time, Integer confirmations) {
+    @Transactional
+    public void syncTx(JSONObject txJson, String blockHash, Date time, Integer confirmations) throws Throwable {
         Transaction tx = new Transaction();
         String txid = txJson.getString("txid");
         tx.setTxhash(txid);
@@ -89,7 +93,7 @@ public class BTCServiceImpl implements BTCService {
     }
 
     @Override
-    public void txDetail(JSONObject txJson,String txid) {
+    public void txDetail(JSONObject txJson,String txid) throws Throwable {
         JSONArray vouts = txJson.getJSONArray("vout");
         txDetailVout(vouts,txid);
         JSONArray vins = txJson.getJSONArray("vin");
@@ -106,7 +110,7 @@ public class BTCServiceImpl implements BTCService {
             transactionDetail.setTxhash(txid);
             transactionDetail.setType((byte)TxDType.Receive.ordinal());
             JSONObject scriptPubKey = jsonObject.getJSONObject("scriptPubKey");
-            JSONArray addresses = scriptPubKey.getJSONArray("address");
+            JSONArray addresses = scriptPubKey.getJSONArray("addresses");
             if(addresses!=null){
                 String address = addresses.getString(0);
                 transactionDetail.setAddress(address);
@@ -117,7 +121,31 @@ public class BTCServiceImpl implements BTCService {
     }
 
     @Override
-    public void txDetailVin(JSONArray vin, String txid) {
+     public void txDetailVin(JSONArray vins, String txid) throws Throwable {
+        for (Object vinObject : vins) {
+            JSONObject jsonObject = new JSONObject((LinkedHashMap) vinObject);
+            String vinTid = jsonObject.getString("txid");
+            Integer vout = jsonObject.getInteger("vout");
+            if(vinTid!=null){
+                JSONObject vinTxJson = bitcoinJsonRpcApi.getTxByHash(vinTid);
+                JSONArray vouts = vinTxJson.getJSONArray("vout");
+                JSONObject utxoJson = vouts.getJSONObject(vout);
 
+                TransactionDetail txDetail = new TransactionDetail();
+                txDetail.setAmount(-utxoJson.getDouble("value"));
+                txDetail.setTxhash(txid);
+                txDetail.setType((byte) TxDType.Send.ordinal());
+                JSONObject scriptPubKey = utxoJson.getJSONObject("scriptPubKey");
+                JSONArray addresses = scriptPubKey.getJSONArray("addresses");
+                if (addresses != null){
+                    String address = addresses.getString(0);
+                    txDetail.setAddress(address);
+                }
+                transactionDetailMapper.insert(txDetail);
+            }
+            }
+
+
+        }
     }
-}
+

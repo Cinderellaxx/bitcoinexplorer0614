@@ -38,10 +38,10 @@ public class TempController {
         return blockChainInfo.toJSONString();
     }
     @GetMapping("/test1")
-    public String test1(){
+    public String test1() throws Throwable {
        /* JSONObject blockByHashJson = bitcoinRestApi.getBlockByHashJson("000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943");
         return blockByHashJson.toJSONString();*/
-       String temp="00000000000e957fc21a6d47e0d1f64615b5dce8b894d40daf8158b4b4c44872";
+       String temp="00000000000018b39e8624566c5334d598d155ab85cc0fb4916de44041805663";
         btcService.sysnBlock(temp);
        return null;
     }
