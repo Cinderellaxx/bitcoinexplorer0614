@@ -1,6 +1,7 @@
 package com.example.bitcoinexplorer0614.dao;
 
 import com.example.bitcoinexplorer0614.po.TransactionDetail;
+import org.apache.ibatis.annotations.Param;
 
 public interface TransactionDetailMapper {
     int deleteByPrimaryKey(Long txDetailId);
@@ -14,4 +15,6 @@ public interface TransactionDetailMapper {
     int updateByPrimaryKeySelective(TransactionDetail record);
 
     int updateByPrimaryKey(TransactionDetail record);
+
+    Double getMoneyDetail(@Param("address") String address);
 }

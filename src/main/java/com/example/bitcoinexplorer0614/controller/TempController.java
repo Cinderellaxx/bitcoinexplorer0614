@@ -42,7 +42,7 @@ public class TempController {
        /* JSONObject blockByHashJson = bitcoinRestApi.getBlockByHashJson("000000000933ea01ad0ee984209779baaec3ced90fa3f408719526f8d77f4943");
         return blockByHashJson.toJSONString();*/
        String temp="00000000000018b39e8624566c5334d598d155ab85cc0fb4916de44041805663";
-        btcService.sysnBlock(temp);
+        btcService.syncBlockchainFromHash(temp);
        return null;
     }
     @GetMapping("/test2")

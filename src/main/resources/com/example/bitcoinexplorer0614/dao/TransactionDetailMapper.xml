@@ -90,4 +90,10 @@
       txhash = #{txhash,jdbcType=CHAR}
     where tx_detail_id = #{txDetailId,jdbcType=BIGINT}
   </update>
+
+  <!--add-->
+  <select id="getMoneyDetail" parameterType="java.lang.String" resultType="java.lang.Double">
+    SELECT SUM(amount) from transaction_detail
+    where address = #{address}
+  </select>
 </mapper>

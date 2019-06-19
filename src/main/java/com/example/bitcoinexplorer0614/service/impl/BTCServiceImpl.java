@@ -37,14 +37,24 @@ public class BTCServiceImpl implements BTCService {
     private BlockMapper blockMapper;
     @Autowired
     private TransactionDetailMapper transactionDetailMapper;
+
     @Override
     @Async
-    @Transactional
-    public void sysnBlock(String blockHash) throws Throwable {
+    public void syncBlockchainFromHash(String blockHash) throws Throwable {
         logger.info("sync bitcoin begin to {}",blockHash);
         String temp=blockHash;
         while(temp!=null && !temp.isEmpty()){
-            JSONObject blockByHashJson = bitcoinRestApi.getBlockByHashJson(temp);
+            String nextBlock=sysnBlock(temp);
+            temp=nextBlock;
+        }
+        logger.info("end......");
+    }
+
+    @Override
+    @Transactional
+    public String sysnBlock(String blockHash) throws Throwable {
+
+            JSONObject blockByHashJson = bitcoinRestApi.getBlockByHashJson(blockHash);
             Block block =new Block();
             block.setBlockhash(blockByHashJson.getString("hash"));
             block.setHeight(blockByHashJson.getInteger("height"));
@@ -61,6 +71,7 @@ public class BTCServiceImpl implements BTCService {
             block.setNextBlock(blockByHashJson.getString("nextblockhash"));
             block.setPrevBlock(blockByHashJson.getString("previousblockhash"));
             Integer confirmations = blockByHashJson.getInteger(("confirmations"));
+             blockMapper.insert(block);
             //todo sync txes
             JSONArray txArray = blockByHashJson.getJSONArray("tx");
             for (Object txObject : txArray) {
@@ -68,11 +79,7 @@ public class BTCServiceImpl implements BTCService {
                 syncTx(txJson,blockHash,time,confirmations);
             }
 
-            blockMapper.insert(block);
-
-            temp=block.getNextBlock();
-        }
-        logger.info("end.......");
+            return  block.getNextBlock();
     }
 
     @Override
