@@ -149,7 +149,7 @@
   <resultMap id="BlockListDto" type="com.example.bitcoinexplorer0614.dto.BlockListDto">
     <id column="blockhash" jdbcType="CHAR" property="blockhash" />
     <result column="height" jdbcType="INTEGER" property="height" />
-    <result column="time" jdbcType="BIGINT" property="time" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
     <result column="txSize" jdbcType="SMALLINT" property="txsize" />
     <result column="size" jdbcType="INTEGER" property="size" />
   </resultMap>
@@ -157,6 +157,6 @@
     select
     *
     from block
-    where blockhash = #{blockhash,jdbcType=CHAR}
+    where blockhash = #{blockhash}
   </select>
 </mapper>

@@ -48,7 +48,7 @@ public class BlockController {
     }
 
     @GetMapping("/getByBlockhash")
-    public Block getByBlockhash(@RequestParam String blockhash){
+    public List<BlockListDto> getByBlockhash(@RequestParam String blockhash){
 //        BlockGetDto blockGetDTO = new BlockGetDto();
 //        blockGetDTO.setBlockhash("00000000000000000001ce5f88601a311f1c73c0073a15fe4e5956da7fbcd78b");
 //        blockGetDTO.setHeight(580643);
@@ -60,7 +60,7 @@ public class BlockController {
 //        blockGetDTO.setTxSize((short) 2702);
 //        blockGetDTO.setSize(1322496);
 //        blockGetDTO.setDifficulty(7409399249090.25);
-        Block byBlockhash = blockMapper.selectByPrimaryKey(blockhash);
+        List<BlockListDto> byBlockhash = blockMapper.getByBlockhash(blockhash);
         return byBlockhash;
 
     }

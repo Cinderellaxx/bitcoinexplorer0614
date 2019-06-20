@@ -22,5 +22,5 @@ public interface BlockMapper {
 
     List<Block> selectNewBlock();
 
-    Block getByBlockhash(@Param("blockhash") String blockhash);
+    List<BlockListDto> getByBlockhash(@Param("blockhash") String blockhash);
 }
