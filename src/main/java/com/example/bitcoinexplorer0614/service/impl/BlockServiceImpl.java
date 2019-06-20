@@ -21,7 +21,7 @@ public class BlockServiceImpl implements BlockService {
             BlockListDto blockListDto = new BlockListDto();
             blockListDto.setBlockhash(block.getBlockhash());
             blockListDto.setHeight(block.getHeight());
-//            blockListDto.setTime(block.getTime().getTime());
+            blockListDto.setTime(block.getTime().getTime());
             blockListDto.setTxsize(block.getTxsize());
             blockListDto.setSize(block.getSize());
             blockListDtos.add(blockListDto);

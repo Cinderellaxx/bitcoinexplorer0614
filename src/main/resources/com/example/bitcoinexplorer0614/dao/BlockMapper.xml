@@ -159,4 +159,16 @@
     from block
     where blockhash = #{blockhash}
   </select>
+
+  <resultMap id="BlockGetDto" type="com.example.bitcoinexplorer0614.dto.BlockGetDto">
+    <id column="blockhash" jdbcType="CHAR" property="blockhash" />
+    <result column="height" jdbcType="INTEGER" property="height" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="txSize" jdbcType="SMALLINT" property="txsize" />
+    <result column="size" jdbcType="INTEGER" property="size" />
+    <result column="difficulty" jdbcType="DOUBLE" property="difficulty" />
+    <result column="weight" jdbcType="REAL" property="weight" />
+    <result column="next_block" jdbcType="CHAR" property="nextBlock" />
+    <result column="prev_block" jdbcType="CHAR" property="prevBlock" />
+  </resultMap>
 </mapper>

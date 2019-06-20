@@ -8,8 +8,8 @@ public class BlockListDto {
 
     private Integer height;
 
-      private Date time;
-//    private Long time;
+//      private Date time;
+    private Long time;
 
     private Short txsize;
 
@@ -31,13 +31,13 @@ public class BlockListDto {
         this.height = height;
     }
 
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
+//    public Date getTime() {
+//        return time;
+//    }
+//
+//    public void setTime(Date time) {
+//        this.time = time;
+//    }
 
     public Short getTxsize() {
         return txsize;
@@ -55,5 +55,11 @@ public class BlockListDto {
         this.size = size;
     }
 
+    public Long getTime() {
+        return time;
+    }
 
+    public void setTime(Long time) {
+        this.time = time;
+    }
 }
