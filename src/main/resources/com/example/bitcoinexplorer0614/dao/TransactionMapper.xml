@@ -120,4 +120,5 @@
     <include refid="Base_Column_List" />
     from transaction limit 5
   </select>
+
 </mapper>

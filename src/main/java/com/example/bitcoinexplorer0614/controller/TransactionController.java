@@ -5,10 +5,7 @@ import com.example.bitcoinexplorer0614.dto.TransactionListDto;
 import com.example.bitcoinexplorer0614.po.Transaction;
 import com.example.bitcoinexplorer0614.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,5 +21,11 @@ public class TransactionController {
     public List<TransactionListDto> getTranList(){
         List<TransactionListDto> tranList = transactionService.getTranList();
         return tranList;
+    }
+
+    @GetMapping("/getByTxHash")
+    public Transaction getByTxHash(@RequestParam String txhash){
+        Transaction byTxHash = transactionMapper.selectByPrimaryKey(txhash);
+        return byTxHash;
     }
 }

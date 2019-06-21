@@ -2,6 +2,7 @@ package com.example.bitcoinexplorer0614.dao;
 
 import com.example.bitcoinexplorer0614.dto.TransactionListDto;
 import com.example.bitcoinexplorer0614.po.Transaction;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,4 +21,5 @@ public interface TransactionMapper {
 
 
     List<Transaction> getTranList1();
+
 }
