@@ -28,4 +28,9 @@ public class BlockServiceImpl implements BlockService {
         }
         return blockListDtos;
     }
+
+    @Override
+    public List<BlockListDto> getByBlockhash(String blockhash) {
+        return blockMapper.getByBlockhash(blockhash);
+    }
 }

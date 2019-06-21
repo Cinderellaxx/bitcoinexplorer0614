@@ -9,4 +9,5 @@ import java.util.List;
 public interface BlockService {
     List<BlockListDto> getNewBlock();
 
+    List<BlockListDto> getByBlockhash(String blockhash);
 }

@@ -146,29 +146,14 @@
     from block
     ORDER BY height desc limit 5
   </select>
-  <resultMap id="BlockListDto" type="com.example.bitcoinexplorer0614.dto.BlockListDto">
-    <id column="blockhash" jdbcType="CHAR" property="blockhash" />
-    <result column="height" jdbcType="INTEGER" property="height" />
-    <result column="time" jdbcType="TIMESTAMP" property="time" />
-    <result column="txSize" jdbcType="SMALLINT" property="txsize" />
-    <result column="size" jdbcType="INTEGER" property="size" />
-  </resultMap>
-  <select id="getByBlockhash" parameterType="java.lang.String" resultMap="BlockListDto">
+
+
+  <select id="getByHeight" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
-    *
+    <include refid="Base_Column_List" />
     from block
-    where blockhash = #{blockhash}
+    where height = #{height}
   </select>
 
-  <resultMap id="BlockGetDto" type="com.example.bitcoinexplorer0614.dto.BlockGetDto">
-    <id column="blockhash" jdbcType="CHAR" property="blockhash" />
-    <result column="height" jdbcType="INTEGER" property="height" />
-    <result column="time" jdbcType="TIMESTAMP" property="time" />
-    <result column="txSize" jdbcType="SMALLINT" property="txsize" />
-    <result column="size" jdbcType="INTEGER" property="size" />
-    <result column="difficulty" jdbcType="DOUBLE" property="difficulty" />
-    <result column="weight" jdbcType="REAL" property="weight" />
-    <result column="next_block" jdbcType="CHAR" property="nextBlock" />
-    <result column="prev_block" jdbcType="CHAR" property="prevBlock" />
-  </resultMap>
+
 </mapper>

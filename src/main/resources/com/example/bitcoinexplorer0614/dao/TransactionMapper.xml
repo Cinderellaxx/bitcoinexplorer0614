@@ -115,7 +115,7 @@
     where txhash = #{txhash,jdbcType=CHAR}
   </update>
   <!--select-->
-  <select id="getTranList"  resultMap="BaseResultMap">
+  <select id="getTranList1"  resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from transaction limit 5

@@ -17,13 +17,12 @@ public class TransactionServiceImpl implements TransactionService{
     @Override
     public List<TransactionListDto> getTranList() {
         ArrayList<TransactionListDto> tList = new ArrayList<>();
-        List<Transaction> tranList = transactionMapper.getTranList();
+        List<Transaction> tranList = transactionMapper.getTranList1();
         for (Transaction t : tranList) {
             TransactionListDto tListDto = new TransactionListDto();
             tListDto.setTxhash(t.getTxhash());
             tListDto.setTime(t.getTime().getTime());
             tListDto.setAmount(t.getAmount());
-
             tList.add(tListDto);
         }
         return tList;
