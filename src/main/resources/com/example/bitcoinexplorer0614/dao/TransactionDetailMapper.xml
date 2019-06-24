@@ -96,4 +96,11 @@
     SELECT SUM(amount) from transaction_detail
     where address = #{address}
   </select>
+
+  <select id="selectAddress" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from transaction_detail
+    where address=#{s}
+  </select>
 </mapper>
